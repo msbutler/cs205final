@@ -11,19 +11,10 @@
 `git clone https://github.com/msbutler/cs205final`
 
 
-5. Load the training data (zipfolder) onto the machine (you might need to use public ip, instead of dns), onto the repo:
-`scp -i ./CS205-key.pem ./path/to/trainingzipfile <username>@<public-dns>:/`
-
-6. Unzip the training data, and ensure the root folder is named `Train`:
-
-`unzip {training zip file}`
-
-7. verify that the root of the vm contains the `Train` and `cs205final` directories.
-
-8. launch jupyter:
+5. launch jupyter:
 `jupyter notebook`
 
-9. copy and paste the url printed to your consol into your browser. looks kinda like:
+6. copy and paste the url printed to your consol into your browser. looks kinda like:
 `http://localhost:8888/?token=c65d0f53c262b4e45790a4f2e06023ded15c839ba51e7e2e`
 
 10. navigate to the repo! use the `conda_tensorflow_p37` kernel
