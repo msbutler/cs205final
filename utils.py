@@ -16,12 +16,12 @@ def compress_im(root,basewidth):
             #print(file_path)
             #print(os.path.getsize(file_path))
             img = Image.open(file_path)
-            img.show()
+            #img.show()
             comp_frac = basewidth/img.size[0]
             assert (comp_frac <=1.)
             hsize = int(img.size[1] * comp_frac)
             img = img.resize((basewidth, hsize), Image.ANTIALIAS)
-            img.show()
+            #img.show()
             img.save(file_path)
             #print(os.path.getsize(file_path))
             #assert 0 ==1
