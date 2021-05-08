@@ -64,7 +64,7 @@ def fit(input_dict, training_iters = training_iters):
     u = tf.placeholder(tf.float32, [None, h_dim, v_dim, 3], 'u') # unlabeled images (augmented)
     y = tf.placeholder(tf.float32, [None, 1], 'y') # labels
     train_labels = np.array(train_labels).reshape(-1,1)
-    test_labels = np.array(test_labels).reshape(-1,1
+    test_labels = np.array(test_labels).reshape(-1,1)
 
     # run model with placeholder tensors (feed forward pass)
     pred_x = toy_model(x)
@@ -94,7 +94,7 @@ def fit(input_dict, training_iters = training_iters):
 
     # initialize variables
     init = tf.global_variables_initializer()
-    
+
     # train model
     with tf.Session() as sess:
         sess.run(init)
@@ -113,7 +113,7 @@ def fit(input_dict, training_iters = training_iters):
             acc_total = 0
             train_labeled_results = []
             train_unlabeled_results = []
-    
+
             # Run optimization 
             # Calculate batch loss and accuracy
             for batch in range(num_batches):

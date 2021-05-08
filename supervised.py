@@ -16,6 +16,9 @@ batch_size = 4
 learning_rate = 1e-3
 
 def fit(input_dict,training_iters=training_iters):
+    data_img = input_dict["data_img"]
+    train_idx, test_idx, train_labels, test_labels, dummy1, dummy2 = input_dict["idxs"]
+
 
     # define inputs
     x = tf.placeholder(tf.float32, [None, v_dim, h_dim, 3])
@@ -45,7 +48,7 @@ def fit(input_dict,training_iters=training_iters):
     init = tf.global_variables_initializer()
 
     # train model
-    with tf.Session(config=config) as sess:
+    with tf.Session() as sess:
         sess.run(init)
         train_loss = []
         test_loss = []

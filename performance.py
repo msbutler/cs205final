@@ -1,5 +1,9 @@
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
+import matplotlib.pyplot as plt
 import numpy as np
+import scipy as sp
 from PIL import Image
 import os
 
@@ -22,20 +26,16 @@ def run(semi = False):
     input_dict["idxs"] = train_test_split(flooded_img,nonflooded_img,unlabeled_img,n)
 
      
+    for i in range(4):
+        print("Test if {i} GPUS!")
+        
 
-    if semi==True:
-        semisupervised.fit(input_dict)
-    
-    else:
-        supervised.fit(input_dict)
-
-    print("Loaded!")
-
+        if semi==True:
+            semisupervised.fit(input_dict,training_iters=1)
+        
+        else:
+            supervised.fit(input_dict,training_iters=1)
 
 
 if __name__ == '__main__':
     run(False)
-
-    
-
-    
