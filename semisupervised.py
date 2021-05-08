@@ -9,12 +9,18 @@ from PIL import Image
 import os
 import matplotlib.pyplot as plt
 
-import architecture
+from architecture import *
 from config import *
 
 training_iters = 200
 batch_size = 4
 learning_rate = 1e-3
+
+# Google paper section 3.5 says 100 is a good place to start for w_unlabeled
+# Google paper also suggests ramping up value to 100 over first 16,000 epochs
+w_unlabeled = 100. 
+
+k = 2 # augment images k times
 
 def generate_guess_label(pred_u_raw, k):
     # guess label = average prediction over k augmentations of same image
@@ -47,18 +53,18 @@ def sharpen(p):
     pred = p**(1./T)/(p**(1./T) + (1.-p)**(1./T))
     return pred
 
-def fit(training_iters = training_iters):
+def fit(input_dict, training_iters = training_iters):
+    data_img = input_dict["data_img"]
+    unlabeled_img = input_dict["unlabeled_img"]
+    label_train_idx, label_test_idx, train_labels, test_labels, unlabel_train_idx, unlabel_test_idx = input_dict["idxs"]
+
+
     # define inputs
     x = tf.placeholder(tf.float32, [None, h_dim, v_dim, 3], 'x') # labeled images (augmented)
     u = tf.placeholder(tf.float32, [None, h_dim, v_dim, 3], 'u') # unlabeled images (augmented)
     y = tf.placeholder(tf.float32, [None, 1], 'y') # labels
     train_labels = np.array(train_labels).reshape(-1,1)
-    test_labels = np.array(test_labels).reshape(-1,1)
-    k = 2 # augment images k times
-
-    # Google paper section 3.5 says 100 is a good place to start for w_unlabeled
-    # Google paper also suggests ramping up value to 100 over first 16,000 epochs
-    w_unlabeled = 100. 
+    test_labels = np.array(test_labels).reshape(-1,1
 
     # run model with placeholder tensors (feed forward pass)
     pred_x = toy_model(x)
