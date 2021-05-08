@@ -14,8 +14,8 @@
 5. To run the performance analysis code:
 Run THIS
 
-6. To play with the jupyter notebooks:
-   `jupyter notebook`
+6. To play with the jupyter notebooks, run the following in your terminal on the ami:
+    - `jupyter notebook`
 
    - and copy and paste the url printed to your consol into your browser. looks kinda like:
     `http://localhost:8888/?token=c65d0f53c262b4e45790a4f2e06023ded15c839ba51e7e2e`

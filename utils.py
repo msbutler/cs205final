@@ -3,6 +3,9 @@ from PIL import Image
 import os
 import random
 import numpy as np
+from config import h_dim, v_dim, n
+import skimage as sk
+from skimage import transform
 
 """ compresses all .jpg files in the directory and subdirectory to have a certain basewidth"""
 def compress_im(root,basewidth):
@@ -13,19 +16,46 @@ def compress_im(root,basewidth):
         if os.path.isdir(file_path):
             compress_im(file_path,basewidth)
         elif ob[-3:] == "jpg":
-            #print(file_path)
-            #print(os.path.getsize(file_path))
             img = Image.open(file_path)
-            #img.show()
             comp_frac = basewidth/img.size[0]
             assert (comp_frac <=1.)
             hsize = int(img.size[1] * comp_frac)
             img = img.resize((basewidth, hsize), Image.ANTIALIAS)
-            #img.show()
             img.save(file_path)
-            #print(os.path.getsize(file_path))
-            #assert 0 ==1
             
+            
+def prep_data(semi = False):
+    print("Loading Data from Memory")
+
+    root = "Train"
+    label_flood_dir = os.path.join(root,'Labeled','Flooded','image')
+    label_nonflood_dir = os.path.join(root,'Labeled','Non-Flooded','image')
+    unlabel_dir = os.path.join(root,'Unlabeled/image/')
+
+    flooded_img = []
+    nonflooded_img = []
+    unlabeled_img = []
+
+    for file in os.listdir(label_flood_dir):
+        image = Image.open(os.path.join(label_flood_dir, file))
+        flooded_img.append(np.array(image.resize((h_dim,v_dim))))
+        
+    for file in os.listdir(label_nonflood_dir):
+        image = Image.open(os.path.join(label_nonflood_dir, file))
+        nonflooded_img.append(np.array(image.resize((h_dim,v_dim))))
+    
+    print("Flooded Image Shape: {}".format(flooded_img[0].shape))
+    print("Non_Flooded Image Shape: {}".format(nonflooded_img[0].shape))
+
+    if semi == True:
+        for file in os.listdir(unlabel_dir):
+            image = Image.open(os.path.join(unlabel_dir, file))
+            image = np.array(image.resize((h_dim,v_dim)))
+            unlabeled_img.append(rotate_img(image))
+            unlabeled_img.append(rotate_img(image))
+
+    return flooded_img, nonflooded_img, unlabeled_img
+
 
 """ splits labeled flooded data, labeled unflooded, and unlabelled data into training and test data
 
@@ -85,7 +115,10 @@ def train_test_split(flooded_img, nonflooded_img, unlabelled_img=np.array([]),n=
     print(f"Testing Indices len {len(test_idx)}")
     
     if len(unlabelled_img)== 0:
-        return train_idx, test_idx, train_labels, test_labels
+        print("\t dummy unlabel idx")
+        unlabel_train_idx = np.array([])
+        unlabel_test_idx = np.array([])
+
     else:
         if n ==0:
             n_s = len(unlabelled_img)
@@ -95,10 +128,20 @@ def train_test_split(flooded_img, nonflooded_img, unlabelled_img=np.array([]),n=
             
         u_idx = list(range(n_s))
         random.shuffle(u_idx)
-        
         unlabel_train_idx = np.array(u_idx[:s])
         unlabel_test_idx = np.array(u_idx[s:n_s])
         unlabel_train_idx.sort()
         unlabel_test_idx.sort()
         print(f"Unlabelled Data len {len(unlabelled_img)}; n is {n_s} ;train size {s}, test size {n_s-s}")
-        return train_idx, test_idx, train_labels, test_labels, unlabel_train_idx, unlabel_test_idx
+
+    return train_idx, test_idx, train_labels, test_labels, unlabel_train_idx, unlabel_test_idx
+
+
+
+
+def rotate_img(image):
+    random_degree = random.uniform(-25, 25) #25% from left or right
+    return sk.transform.rotate(image, random_degree)
+
+def noise_img(image):
+    return sk.util.random_noise(image)
