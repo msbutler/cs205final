@@ -28,7 +28,9 @@ def run(semi = False):
      
     for i in range(4):
         print("Test if {i} GPUS!")
-        
+        gpus = ','.join(list(range(i)).pop(-1))
+        print(gpus)
+        os.environ["CUDA_VISIBLE_DEVICES"]=gpus
 
         if semi==True:
             semisupervised.fit(input_dict,training_iters=1)
