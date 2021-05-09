@@ -47,10 +47,12 @@ def strong(semi = False):
 
         if semi==True:
             semisupervised.fit(input_dict,training_iters=iters)
-        
+
         else:
             supervised.fit(input_dict,training_iters=iters)
         times.append((time.time()-begin)/iters)
+
+    print("Strong Scaling Times: {}".format(times))
 
     fig,ax = plt.subplots(1,1)
     ax.plot(list(range(max_gpus+1)),times)
@@ -81,11 +83,13 @@ def weak(semi = False):
 
         if semi==True:
             semisupervised.fit(input_dict,training_iters=iters)
-        
+
         else:
             supervised.fit(input_dict,training_iters=iters)
         times.append((time.time()-begin)/iters)
-    
+
+    print("Weak Scaling Times: {}".format(times))
+
     fig,ax = plt.subplots(1,1)
     ax.plot(data_fracs,times)
     ax.set_xlabel('Fraction of Dataset')
@@ -93,5 +97,5 @@ def weak(semi = False):
     fig.savefig("Figures/avg_epoch_seconds_over_datasize.png")
 
 if __name__ == '__main__':
-    weak(True) 
-    strong(True)
+    weak(False)
+    strong(False)
