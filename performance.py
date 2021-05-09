@@ -14,9 +14,9 @@ import time
 
 # set to max number of gpus on the instance
 max_gpus = 2
-iters = 5
+iters = 1
 
-def strong(semi = False):
+def strong(semi = False, num_gpus):
     print("strong scaling test")
     input_dict = {}
     # gather data
@@ -29,36 +29,49 @@ def strong(semi = False):
     #split data
     input_dict["idxs"] = train_test_split(flooded_img,nonflooded_img,unlabeled_img,n)
 
-    times = []
+    # print(f"FOR {max_gpus} GPUS")
+    # for i in range(max_gpus+1):
+    #     begin = time.time()
+    #     print(f"Test on {i} GPUS!")
+    #     l = [str(x) for x in list(range(i))]
+    #     gpus = ','.join(l)
+    #     print(gpus)
+    #     os.environ["CUDA_VISIBLE_DEVICES"]=gpus
+    #
+    #     with tf.Session() as sess:
+    #         devices = sess.list_devices()
+    #         for d in devices:
+    #             print(d)
+    #
+    #     if semi==True:
+    #         semisupervised.fit(input_dict, training_iters=iters)
+    #
+    #     else:
+    #         supervised.fit(input_dict, training_iters=iters)
+    #     times.append((time.time()-begin)/iters)
 
-    print(f"FOR {max_gpus} GPUS")
-    for i in range(max_gpus+1):
-        begin = time.time()
-        print(f"Test on {i} GPUS!")
-        l = [str(x) for x in list(range(i))]
-        gpus = ','.join(l)
-        print(gpus)
-        os.environ["CUDA_VISIBLE_DEVICES"]=gpus
+    print(f"Test on {num_gpus} GPUS!")
+    begin = time.time()
+    l = [str(x) for x in list(range(num_gpus))]
+    gpus = ','.join(l)
 
-        with tf.Session() as sess:
-            devices = sess.list_devices()
-            for d in devices:
-                print(d)
+    os.environ["CUDA_VISIBLE_DEVICES"]=gpus
 
-        if semi==True:
-            semisupervised.fit(input_dict, training_iters=iters)
+    with tf.Session() as sess:
+        devices = sess.list_devices()
+        for d in devices:
+            print(d)
 
-        else:
-            supervised.fit(input_dict, training_iters=iters)
-        times.append((time.time()-begin)/iters)
+    if semi==True:
+        semisupervised.fit(input_dict, training_iters=iters)
 
-    print("Strong Scaling Times: {}".format(times))
+    else:
+        supervised.fit(input_dict, training_iters=iters)
 
-    fig,ax = plt.subplots(1,1)
-    ax.plot(list(range(max_gpus+1)),times)
-    ax.set_xlabel('Number of GPUs')
-    ax.set_ylabel('Ave Time per Epoch (s)')
-    fig.savefig("Figures/avg_epoch_seconds_over_gpu.png")
+    strong_scaling_time = time.time()-begin
+    print("Strong Scaling Time: {}".format(strong_scaling_time))
+
+    return strong_scaling_time
 
 def weak(semi = False):
     print ("weak scaling test")
@@ -67,8 +80,8 @@ def weak(semi = False):
     flooded_img, nonflooded_img, unlabeled_img = prep_data(semi)
 
     times = []
-    #data_fracs = [0.25,0.5,0.75,1]
-    data_fracs = [0.1,0.2,0.3,0.5]
+    data_fracs = [0.25,0.5,0.75,1]
+    # data_fracs = [0.1,0.2,0.3,0.5]
     for data_frac in data_fracs:
         print(f"frac of data {data_frac}")
         input_dict = {}
@@ -98,5 +111,13 @@ def weak(semi = False):
     fig.savefig("Figures/avg_epoch_seconds_over_datasize.png")
 
 if __name__ == '__main__':
-    weak(True)
-    strong(True)
+    # weak(False)
+    time_no_gpu = strong(False,0)
+    time_1_gpu = strong(False,1)
+    time_2_gpu = strong(False,2)
+
+    fig,ax = plt.subplots(1,1)
+    ax.plot(list(range(3)),[time_no_gpu,time_1_gpu,time_2_gpu])
+    ax.set_xlabel('Number of GPUs')
+    ax.set_ylabel('Ave Time per Epoch (s)')
+    fig.savefig("Figures/avg_epoch_seconds_over_gpu.png")
