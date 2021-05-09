@@ -16,7 +16,7 @@ def run(semi = False):
     data_img = np.vstack((np.array(flooded_img), np.array(nonflooded_img))) / 255.
 
     input_dict["data_img"] = data_img
-    input_dict["unlabeled_img"] = unlabeled_img
+    input_dict["unlabeled_img"] = np.array(unlabeled_img)
 
     #split data
     input_dict["idxs"] = train_test_split(flooded_img,nonflooded_img,unlabeled_img,n=50)
@@ -32,7 +32,7 @@ def run(semi = False):
 
 
 if __name__ == '__main__':
-    run(False)
+    run(True)
 
     
 

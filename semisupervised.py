@@ -67,8 +67,8 @@ def fit(input_dict, training_iters = training_iters):
 
 
     # define inputs
-    x = tf.placeholder(tf.float32, [None, h_dim, v_dim, 3], 'x') # labeled images (augmented)
-    u = tf.placeholder(tf.float32, [None, h_dim, v_dim, 3], 'u') # unlabeled images (augmented)
+    x = tf.placeholder(tf.float32, [None, v_dim, h_dim, 3], 'x') # labeled images (augmented)
+    u = tf.placeholder(tf.float32, [None, v_dim, h_dim, 3], 'u') # unlabeled images (augmented)
     y = tf.placeholder(tf.float32, [None, 1], 'y') # labels
     train_labels = np.array(train_labels).reshape(-1,1)
     test_labels = np.array(test_labels).reshape(-1,1)
@@ -151,8 +151,8 @@ def fit(input_dict, training_iters = training_iters):
             train_accuracy.append(ave_acc)
             test_accuracy.append(test_acc)
             if test_acc > best_acc:
-                best_model_train_labeled = tf.stack(tf.reshape(tf.stack(train_labeled_results),[-1,1])).eval()
-                best_model_train_unlabeled = tf.stack(tf.reshape(tf.stack(train_unlabeled_results),[-1,1])).eval()
+                #best_model_train_labeled = tf.stack(tf.reshape(tf.stack(train_labeled_results),[-1,1])).eval()
+                #best_model_train_unlabeled = tf.stack(tf.reshape(tf.stack(train_unlabeled_results),[-1,1])).eval()
                 best_model_test_labeled = test_labeled_results
                 best_model_test_unlabeled = test_unlabeled_results
                 best_acc = test_acc
