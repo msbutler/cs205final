@@ -67,7 +67,8 @@ def weak(semi = False):
     flooded_img, nonflooded_img, unlabeled_img = prep_data(semi)
 
     times = []
-    data_fracs = [0.25,0.5,0.75,1]
+    #data_fracs = [0.25,0.5,0.75,1]
+    data_fracs = [0.1,0.2,0.3,0.5]
     for data_frac in data_fracs:
         print(f"frac of data {data_frac}")
         input_dict = {}
@@ -98,4 +99,4 @@ def weak(semi = False):
 
 if __name__ == '__main__':
     weak(True)
-    strong(True)
+#    strong(True)
