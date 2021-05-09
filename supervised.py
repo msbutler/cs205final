@@ -21,7 +21,7 @@ fits supervised model with input data,
 - input_dict: training and test indices given by input dict
 - training_iters: number of epochs to train for
 """
-def fit(input_dict,training_iters=training_iters):
+def fit(input_dict, training_iters=training_iters):
     data_img = input_dict["data_img"]
     train_idx, test_idx, train_labels, test_labels, dummy1, dummy2 = input_dict["idxs"]
 
@@ -53,9 +53,16 @@ def fit(input_dict,training_iters=training_iters):
     # initialize variables
     init = tf.global_variables_initializer()
 
+    # config = tf.ConfigProto(device_count = {'GPU': num_gpu})
+
     # train model
     with tf.Session() as sess:
+        devices = sess.list_devices()
+        for d in devices:
+            print(d)
+
         sess.run(init)
+
         train_loss = []
         test_loss = []
         train_accuracy = []

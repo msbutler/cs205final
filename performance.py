@@ -46,10 +46,10 @@ def strong(semi = False):
                 print(d)
 
         if semi==True:
-            semisupervised.fit(input_dict,training_iters=iters)
+            semisupervised.fit(input_dict, training_iters=iters)
 
         else:
-            supervised.fit(input_dict,training_iters=iters)
+            supervised.fit(input_dict, training_iters=iters)
         times.append((time.time()-begin)/iters)
 
     print("Strong Scaling Times: {}".format(times))
@@ -99,4 +99,4 @@ def weak(semi = False):
 
 if __name__ == '__main__':
     weak(True)
-#    strong(True)
+    strong(True)
