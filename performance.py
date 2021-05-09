@@ -35,21 +35,21 @@ def strong(semi = False):
     for i in range(max_gpus+1):
         begin = time.time()
         print(f"Test on {i} GPUS!")
-        # l = [str(x) for x in list(range(i))]
-        # gpus = ','.join(l)
-        # print(gpus)
-        # os.environ["CUDA_VISIBLE_DEVICES"]=gpus
-        #
-        # with tf.Session() as sess:
-        #     devices = sess.list_devices()
-        #     for d in devices:
-        #         print(d)
+        l = [str(x) for x in list(range(i))]
+        gpus = ','.join(l)
+        print(gpus)
+        os.environ["CUDA_VISIBLE_DEVICES"]=gpus
+
+        with tf.Session() as sess:
+            devices = sess.list_devices()
+            for d in devices:
+                print(d)
 
         if semi==True:
-            semisupervised.fit(input_dict, training_iters=iters, num_gpu=i)
+            semisupervised.fit(input_dict, training_iters=iters)
 
         else:
-            supervised.fit(input_dict, training_iters=iters, num_gpu=i)
+            supervised.fit(input_dict, training_iters=iters)
         times.append((time.time()-begin)/iters)
 
     print("Strong Scaling Times: {}".format(times))
