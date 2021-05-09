@@ -97,5 +97,5 @@ def weak(semi = False):
     fig.savefig("Figures/avg_epoch_seconds_over_datasize.png")
 
 if __name__ == '__main__':
-    weak(True)
-    strong(True)
+    # weak(True)
+    strong(False)
