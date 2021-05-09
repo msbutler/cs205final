@@ -53,6 +53,13 @@ def sharpen(p):
     pred = p**(1./T)/(p**(1./T) + (1.-p)**(1./T))
     return pred
 
+
+"""
+fits semi-supervised model with input data,
+- input_dict: training and test indices given by input dict
+- training_iters: number of epochs to train for
+"""
+
 def fit(input_dict, training_iters = training_iters):
     data_img = input_dict["data_img"]
     unlabeled_img = input_dict["unlabeled_img"]

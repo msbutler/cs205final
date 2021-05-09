@@ -15,6 +15,12 @@ training_iters = 200
 batch_size = 4
 learning_rate = 1e-3
 
+
+"""
+fits supervised model with input data,
+- input_dict: training and test indices given by input dict
+- training_iters: number of epochs to train for
+"""
 def fit(input_dict,training_iters=training_iters):
     data_img = input_dict["data_img"]
     train_idx, test_idx, train_labels, test_labels, dummy1, dummy2 = input_dict["idxs"]

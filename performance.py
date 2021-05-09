@@ -12,6 +12,7 @@ import semisupervised
 import supervised
 import time
 
+# set to max number of gpus on the instance
 max_gpus = 1
 
 def run(semi = False):

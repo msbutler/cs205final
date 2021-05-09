@@ -21,8 +21,6 @@ def run(semi = False):
     #split data
     input_dict["idxs"] = train_test_split(flooded_img,nonflooded_img,unlabeled_img,n)
 
-     
-
     if semi==True:
         semisupervised.fit(input_dict)
     
