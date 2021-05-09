@@ -16,18 +16,26 @@ import time
 max_gpus = 2
 iters = 1
 
-def strong(semi = False, num_gpus):
+def strong(semi, num_gpus):
     print("strong scaling test")
     input_dict = {}
     # gather data
     flooded_img, nonflooded_img, unlabeled_img = prep_data(semi)
-    data_img = np.vstack((np.array(flooded_img), np.array(nonflooded_img))) / 255.
+    if semi==True:
+        data_frac = 0.5
+        flooded_img_n = flooded_img[:int(len(flooded_img)*data_frac)]
+        nonflooded_img_n = nonflooded_img[:int(len(nonflooded_img)*data_frac)]
+        unlabeled_img_n = unlabeled_img[:int(len(unlabeled_img)*data_frac)]
+        data_img_n = np.vstack((np.array(flooded_img_n), np.array(nonflooded_img_n))) / 255.
+        input_dict["idxs"] = train_test_split(flooded_img_n,nonflooded_img_n,unlabeled_img_n,n=0)
 
-    input_dict["data_img"] = data_img
-    input_dict["unlabeled_img"] = np.array(unlabeled_img)
-
-    #split data
-    input_dict["idxs"] = train_test_split(flooded_img,nonflooded_img,unlabeled_img,n)
+        input_dict["data_img"] = data_img_n
+        input_dict["unlabeled_img"] = np.array(unlabeled_img_n)
+    else:
+        data_img = np.vstack((np.array(flooded_img), np.array(nonflooded_img))) / 255.
+        input_dict["data_img"] = data_img
+        input_dict["unlabeled_img"] = np.array(unlabeled_img)
+        input_dict["idxs"] = train_test_split(flooded_img,nonflooded_img,unlabeled_img,n)
 
     # print(f"FOR {max_gpus} GPUS")
     # for i in range(max_gpus+1):
@@ -112,12 +120,12 @@ def weak(semi = False):
 
 if __name__ == '__main__':
     # weak(False)
-    time_no_gpu = strong(False,0)
-    time_1_gpu = strong(False,1)
-    time_2_gpu = strong(False,2)
+    time_no_gpu = strong(True,0)
+    time_1_gpu = strong(True,1)
+    time_2_gpu = strong(True,2)
 
     fig,ax = plt.subplots(1,1)
     ax.plot(list(range(3)),[time_no_gpu,time_1_gpu,time_2_gpu])
     ax.set_xlabel('Number of GPUs')
     ax.set_ylabel('Ave Time per Epoch (s)')
-    fig.savefig("Figures/avg_epoch_seconds_over_gpu.png")
+    fig.savefig("Figures/avg_epoch_seconds_over_gpu_semisup.png")
