@@ -20,25 +20,21 @@ def toy_model(x,show_dim = False):
     kernel_h: kernel height
     kernel_w: kernel width
     """
-    def conv_block(x,in_channels,out_channels, show_dim = False, stride = 2, kernel_h=10,kernel_w =10,):
-        shape = [kernel_h,kernel_w,in_channels,out_channels]
-        x = conv_layer(x, shape,stride)
+    def conv_block(x, in_channels, out_channels, kernel_size, stride, show_dim = False):
+        shape = [kernel_size, in_channels, out_channels]
+        x = conv_layer(x, shape, stride)
         x = relu(x)
         x = batch_norm(x)
         x = max_pool(x, k=2)
         if show_dim:
             print(x.shape)
         return x
-    
-    x = conv_block(x,3,16,show_dim)
 
-    x = conv_block(x,16,16,show_dim)
-        
-    x = conv_block(x,16,32,show_dim)
-        
-    #x = conv_block(x,32,32,show_dim)
-    
-    #x = conv_block(x,64,64,show_dim)
+    x = conv_block(x,3,16,25,10,show_dim)
+
+    x = conv_block(x,16,16,10,2,show_dim)
+
+    x = conv_block(x,16,32,10,2,show_dim)
 
     # flatten output and put through a fully connected layer
     flat1, size1 = flatten_layer(x)
@@ -82,7 +78,7 @@ def fully_connected_layer(x, shape):
 
 # flatten layer
 def flatten_layer(x):
-    
+
     size = x.get_shape()[1:4].num_elements()
     out = tf.reshape(x, [-1,size])
     return out, size
