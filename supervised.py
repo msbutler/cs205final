@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from architecture import *
 from config import *
 
-training_iters = 200
+training_iters = 500
 batch_size = 4
 learning_rate = 1e-3
 
@@ -63,19 +63,19 @@ def fit(input_dict,training_iters=training_iters):
         best_acc = 0.
         summary_writer = tf.summary.FileWriter('./Output', sess.graph)
         num_batches = len(train_idx)//batch_size
-        
+
         for i in range(training_iters):
-            
+
             # Reset metrics
             loss_total = 0
             acc_total = 0
             train_results = []
-    
-            # Run optimization 
+
+            # Run optimization
             # Calculate batch loss and accuracy
             for batch in range(num_batches):
                 batch_x = data_img[train_idx,:,:,:][batch*batch_size:min((batch+1)*batch_size,len(train_idx))]
-                batch_y = y_train_true[batch*batch_size:min((batch+1)*batch_size,len(y_train_true))]    
+                batch_y = y_train_true[batch*batch_size:min((batch+1)*batch_size,len(y_train_true))]
 
                 feed_dict={x: batch_x, y: batch_y}
                 opt = sess.run(optimizer, feed_dict=feed_dict)
@@ -91,7 +91,7 @@ def fit(input_dict,training_iters=training_iters):
             # Calculate accuracy for all test images
             valid_loss, test_acc, test_results = sess.run([cost, accuracy, pred_class],
                                     feed_dict={x: data_img[test_idx,:,:,:], y : y_test_true})
-            
+
             # Update metrics
             train_loss.append(ave_loss)
             test_loss.append(valid_loss)
@@ -101,10 +101,19 @@ def fit(input_dict,training_iters=training_iters):
                 best_model_train_labels = tf.stack(tf.reshape(tf.stack(train_results),[-1,1])).eval()
                 best_model_test_labels = test_results
                 best_acc = test_acc
-            
+
             # Print metrics
             print("Iter " + str(i) + ", Loss= " + \
                         "{:.6f}".format(ave_loss) + ", Training Accuracy= " + \
                         "{:.5f}".format(ave_acc)+ \
                         " ,Testing Accuracy:","{:.5f}".format(test_acc))
         summary_writer.close()
+
+    plt.plot(train_loss)
+    plt.savefig("Train Loss - Balanced Supervised.png")
+
+    plt.plot(train_accuracy)
+    plt.savefig("Train Accuracy - Balanced Supervised.png")
+
+    plt.plot(test_accuracy)
+    plt.savefig("Test Accuracy - Balanced Supervised.png")
