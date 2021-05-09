@@ -65,11 +65,12 @@ def weak(semi = False):
     data_fracs = [0.25,0.5,0.75,1]
     for data_frac in data_fracs:
         print(f"frac of data {data_frac}")
-
+        input_dict = {}
         flooded_img_n = flooded_img[:int(len(flooded_img)*data_frac)]
         nonflooded_img_n = nonflooded_img[:int(len(nonflooded_img)*data_frac)]
         unlabeled_img_n = unlabeled_img[:int(len(unlabeled_img)*data_frac)]
         data_img_n = np.vstack((np.array(flooded_img_n), np.array(nonflooded_img_n))) / 255.
+        input_dict["idxs"] = train_test_split(flooded_img_n,nonflooded_img_n,unlabeled_img_n,n=0)
 
         input_dict["data_img"] = data_img_n
         input_dict["unlabeled_img"] = unlabeled_img_n
@@ -85,5 +86,5 @@ def weak(semi = False):
     plt.plot(data_fracs,times)
     plt.savefig("avg_epoch_seconds_over_datasize.png")
 if __name__ == '__main__':
-    weak(False)
+    weak(False) 
     strong(False)
