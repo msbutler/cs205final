@@ -67,11 +67,11 @@ def weak(semi = False):
         print(f"frac of data {data_frac}")
 
         flooded_img_n = flooded_img[:int(len(flooded_img)*data_frac)]
-        non_flooded_img_n = nonflooded_img[:int(len(nonflooded_img)*data_frac)]
+        nonflooded_img_n = nonflooded_img[:int(len(nonflooded_img)*data_frac)]
         unlabeled_img_n = unlabeled_img[:int(len(unlabeled_img)*data_frac)]
-        data_img = np.vstack((np.array(flooded_img_n), np.array(nonflooded_img_n))) / 255.
+        data_img_n = np.vstack((np.array(flooded_img_n), np.array(nonflooded_img_n))) / 255.
 
-        input_dict["data_img"] = data_img
+        input_dict["data_img"] = data_img_n
         input_dict["unlabeled_img"] = unlabeled_img_n
         begin = time.time()
 
