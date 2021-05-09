@@ -5,7 +5,7 @@
 2. Type the following in your terminal (assumes your working ssh key for aws is `~/.ssh/CS205-key.pm`)
 `chmod 0400 ~/.ssh/CS205-key.pem` 
 
-3. Type into terminal (Note that we use the public dns, not public ip)
+3. Type into terminal (maybe use the public dns or public ip....whatever works)
 `ssh -L localhost:8888:localhost:8888 -i ~/.ssh/CS205-key.pem ubuntu@<Your public instance DNS>`
 
 4. Next steps are on the machine. Pull the git repo:

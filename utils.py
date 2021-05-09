@@ -136,9 +136,6 @@ def train_test_split(flooded_img, nonflooded_img, unlabelled_img=np.array([]),n=
 
     return train_idx, test_idx, train_labels, test_labels, unlabel_train_idx, unlabel_test_idx
 
-
-
-
 def rotate_img(image):
     random_degree = random.uniform(-25, 25) #25% from left or right
     return sk.transform.rotate(image, random_degree)

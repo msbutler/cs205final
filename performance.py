@@ -14,6 +14,7 @@ import time
 
 # set to max number of gpus on the instance
 max_gpus = 1
+iters = 1
 
 def run(semi = False):
     input_dict = {}
@@ -30,7 +31,7 @@ def run(semi = False):
     times = []
 
     print(f"FOR {max_gpus} GPUS")
-    for i in range(max_gpus):
+    for i in range(max_gpus+1):
         begin = time.time()
         print("Test on {i} GPUS!")
         gpus = ','.join(list(range(i)))
@@ -38,14 +39,14 @@ def run(semi = False):
         os.environ["CUDA_VISIBLE_DEVICES"]=gpus
 
         if semi==True:
-            semisupervised.fit(input_dict,training_iters=1)
+            semisupervised.fit(input_dict,training_iters=iters)
         
         else:
-            supervised.fit(input_dict,training_iters=1)
-        times.append(time.time()-begin)
+            supervised.fit(input_dict,training_iters=iters)
+        times.append((time.time()-begin)/iters)
 
     plt.plot(times,range(max_gpus))
-    plt.save_fig("time_over_gpu")
+    plt.savefig("avg_epoch_time_over_gpu.png")
 
 if __name__ == '__main__':
     run(False)
