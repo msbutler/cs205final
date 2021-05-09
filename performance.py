@@ -16,7 +16,8 @@ import time
 max_gpus = 1
 iters = 1
 
-def run(semi = False):
+def strong(semi = False):
+    print("strong scaling test")
     input_dict = {}
     # gather data
     flooded_img, nonflooded_img, unlabeled_img = prep_data(semi)
@@ -33,10 +34,16 @@ def run(semi = False):
     print(f"FOR {max_gpus} GPUS")
     for i in range(max_gpus+1):
         begin = time.time()
-        print("Test on {i} GPUS!")
-        gpus = ','.join(list(range(i)))
+        print(f"Test on {i} GPUS!")
+        l = [str(x) for x in list(range(i))]
+        gpus = ','.join(l)
         print(gpus)
         os.environ["CUDA_VISIBLE_DEVICES"]=gpus
+
+        with tf.Session() as sess:
+            devices = sess.list_devices()
+            for d in devices:
+                print(d)
 
         if semi==True:
             semisupervised.fit(input_dict,training_iters=iters)
@@ -45,8 +52,38 @@ def run(semi = False):
             supervised.fit(input_dict,training_iters=iters)
         times.append((time.time()-begin)/iters)
 
-    plt.plot(times,range(max_gpus))
-    plt.savefig("avg_epoch_time_over_gpu.png")
+    plt.plot(range(max_gpus),times)
+    plt.savefig("avg_epoch_seconds_over_gpu.png")
 
+def weak(semi = False):
+    print ("weak scaling test")
+
+    # gather data
+    flooded_img, nonflooded_img, unlabeled_img = prep_data(semi)
+
+    times = []
+    data_fracs = [0.25,0.5,0.75,1]
+    for data_frac in data_fracs:
+        print(f"frac of data {data_frac}")
+
+        flooded_img_n = flooded_img[:int(len(flooded_img)*data_frac)]
+        non_flooded_img_n = nonflooded_img[:int(len(nonflooded_img)*data_frac)]
+        unlabeled_img_n = unlabeled_img[:int(len(unlabeled_img)*data_frac)]
+        data_img = np.vstack((np.array(flooded_img_n), np.array(nonflooded_img_n))) / 255.
+
+        input_dict["data_img"] = data_img
+        input_dict["unlabeled_img"] = unlabeled_img_n
+        begin = time.time()
+
+        if semi==True:
+            semisupervised.fit(input_dict,training_iters=iters)
+        
+        else:
+            supervised.fit(input_dict,training_iters=iters)
+        times.append((time.time()-begin)/iters)
+
+    plt.plot(data_fracs,times)
+    plt.savefig("avg_epoch_seconds_over_datasize.png")
 if __name__ == '__main__':
-    run(False)
+    weak(False)
+    strong(False)
