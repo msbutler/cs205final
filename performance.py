@@ -32,7 +32,7 @@ def run(semi = False):
     for i in range(max_gpus):
         begin = time.time()
         print("Test on {i} GPUS!")
-        gpus = ','.join(list(range(i)).pop(-1))
+        gpus = ','.join(list(range(i)))
         print(gpus)
         os.environ["CUDA_VISIBLE_DEVICES"]=gpus
 
