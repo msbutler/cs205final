@@ -57,11 +57,11 @@ def fit(input_dict, training_iters=training_iters):
 
     # train model
     with tf.Session() as sess:
-        sess.run(init)
-
         devices = sess.list_devices()
         for d in devices:
             print(d)
+
+        sess.run(init)
 
         train_loss = []
         test_loss = []
