@@ -14,7 +14,7 @@ import time
 
 # set to max number of gpus on the instance
 max_gpus = 2
-iters = 1
+iters = 5
 
 def strong(semi = False):
     print("strong scaling test")
@@ -32,7 +32,7 @@ def strong(semi = False):
     times = []
 
     print(f"FOR {max_gpus} GPUS")
-    for i in range(max_gpus):
+    for i in range(max_gpus+1):
         begin = time.time()
         print(f"Test on {i} GPUS!")
         l = [str(x) for x in list(range(i))]
@@ -53,10 +53,10 @@ def strong(semi = False):
         times.append((time.time()-begin)/iters)
 
     fig,ax = plt.subplots(1,1)
-    ax.plot(list(range(max_gpus)),times)
+    ax.plot(list(range(max_gpus+1)),times)
     ax.set_xlabel('Number of GPUs')
     ax.set_ylabel('Ave Time per Epoch (s)')
-    fig.savefig("avg_epoch_seconds_over_gpu.png")
+    fig.savefig("Figures/avg_epoch_seconds_over_gpu.png")
 
 def weak(semi = False):
     print ("weak scaling test")
@@ -65,7 +65,7 @@ def weak(semi = False):
     flooded_img, nonflooded_img, unlabeled_img = prep_data(semi)
 
     times = []
-    data_fracs = [0.25,0.5]#,0.75,1]
+    data_fracs = [0.25,0.5,0.75,1]
     for data_frac in data_fracs:
         print(f"frac of data {data_frac}")
         input_dict = {}
@@ -90,8 +90,8 @@ def weak(semi = False):
     ax.plot(data_fracs,times)
     ax.set_xlabel('Fraction of Dataset')
     ax.set_ylabel('Ave Time per Epoch (s)')
-    fig.savefig("avg_epoch_seconds_over_datasize.png")
+    fig.savefig("Figures/avg_epoch_seconds_over_datasize.png")
 
 if __name__ == '__main__':
-    weak(False) 
-    strong(False)
+    weak(True) 
+    strong(True)
