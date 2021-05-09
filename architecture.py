@@ -21,7 +21,7 @@ def toy_model(x,show_dim = False):
     kernel_w: kernel width
     """
     def conv_block(x, in_channels, out_channels, kernel_size, stride, show_dim = False):
-        shape = [kernel_size, in_channels, out_channels]
+        shape = [kernel_size, kernel_size, in_channels, out_channels]
         x = conv_layer(x, shape, stride)
         x = relu(x)
         x = batch_norm(x)
@@ -32,9 +32,9 @@ def toy_model(x,show_dim = False):
 
     x = conv_block(x,3,16,25,10,show_dim)
 
-    x = conv_block(x,16,16,10,2,show_dim)
+    x = conv_block(x,16,16,5,2,show_dim)
 
-    x = conv_block(x,16,32,10,2,show_dim)
+    x = conv_block(x,16,32,5,2,show_dim)
 
     # flatten output and put through a fully connected layer
     flat1, size1 = flatten_layer(x)
