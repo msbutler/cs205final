@@ -11,10 +11,16 @@
 4. Next steps are on the machine. Pull the git repo:
 `git clone https://github.com/msbutler/cs205final`
 
-5. To run the performance analysis code:
-Run THIS
+5. Activate the proper environment:
+`source activate tensorflow_p37`
 
-6. To play with the jupyter notebooks, run the following in your terminal on the ami:
+6. Run the vanilla model
+`python run.py`
+
+7. Run the performance tests
+`python performance.py`
+
+8. To play with the jupyter notebooks, run the following in your terminal on the ami:
     - `jupyter notebook`
 
    - and copy and paste the url printed to your consol into your browser. looks kinda like:

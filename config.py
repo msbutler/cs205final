@@ -8,6 +8,3 @@ if test == True:
     n = 20
 else:
     n = 0 #means all data is used!!!!
-
-
-#optimization
