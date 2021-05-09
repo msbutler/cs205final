@@ -86,5 +86,5 @@ def weak(semi = False):
     plt.plot(data_fracs,times)
     plt.savefig("avg_epoch_seconds_over_datasize.png")
 if __name__ == '__main__':
-    #weak(False) 
+    weak(False) 
     strong(False)
