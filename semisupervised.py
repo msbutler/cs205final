@@ -157,7 +157,7 @@ def fit(input_dict, training_iters = training_iters):
                 best_model_test_unlabeled = test_unlabeled_results
                 best_acc = test_acc
             
-            if i%10 == 0:
+            if i%1 == 0:
                 print("Iter " + str(i) + ", Loss= " + \
                     "{:.6f}".format(ave_loss) + ", Training Accuracy= " + \
                     "{:.5f}".format(ave_acc) + ", Testing Accuracy= " + \
