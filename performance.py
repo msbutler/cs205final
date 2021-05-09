@@ -24,7 +24,7 @@ def strong(semi = False):
     data_img = np.vstack((np.array(flooded_img), np.array(nonflooded_img))) / 255.
 
     input_dict["data_img"] = data_img
-    input_dict["unlabeled_img"] = unlabeled_img
+    input_dict["unlabeled_img"] = np.array(unlabeled_img)
 
     #split data
     input_dict["idxs"] = train_test_split(flooded_img,nonflooded_img,unlabeled_img,n)
@@ -78,7 +78,7 @@ def weak(semi = False):
         input_dict["idxs"] = train_test_split(flooded_img_n,nonflooded_img_n,unlabeled_img_n,n=0)
 
         input_dict["data_img"] = data_img_n
-        input_dict["unlabeled_img"] = unlabeled_img_n
+        input_dict["unlabeled_img"] = np.array(unlabeled_img_n)
         begin = time.time()
 
         if semi==True:
@@ -97,5 +97,5 @@ def weak(semi = False):
     fig.savefig("Figures/avg_epoch_seconds_over_datasize.png")
 
 if __name__ == '__main__':
-    weak(False)
-    strong(False)
+    weak(True)
+    strong(True)

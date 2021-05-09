@@ -38,12 +38,20 @@ def prep_data(semi = False):
 
     for file in os.listdir(label_flood_dir):
         image = Image.open(os.path.join(label_flood_dir, file))
-        flooded_img.append(np.array(image.resize((h_dim,v_dim))))
+        image = np.array(image.resize((h_dim,v_dim)))
+        if semi == True:
+            flooded_img.append(rotate_img(image))
+        else:
+            flooded_img.append(image)
         
     for file in os.listdir(label_nonflood_dir):
         image = Image.open(os.path.join(label_nonflood_dir, file))
-        nonflooded_img.append(np.array(image.resize((h_dim,v_dim))))
-    
+        image = np.array(image.resize((h_dim,v_dim)))
+        if semi == True:
+            nonflooded_img.append(rotate_img(image))
+        else:
+            nonflooded_img.append(image)
+
     print("Flooded Image Shape: {}".format(flooded_img[0].shape))
     print("Non_Flooded Image Shape: {}".format(nonflooded_img[0].shape))
 
@@ -53,6 +61,7 @@ def prep_data(semi = False):
             image = np.array(image.resize((h_dim,v_dim)))
             unlabeled_img.append(rotate_img(image))
             unlabeled_img.append(rotate_img(image))
+        print("Unlabeled Image Shape: {}".format(unlabeled_img[0].shape))
 
     return flooded_img, nonflooded_img, unlabeled_img
 
@@ -127,11 +136,11 @@ def train_test_split(flooded_img, nonflooded_img, unlabelled_img=np.array([]),n=
             n_s = n
             
         u_idx = list(range(n_s))
-        random.shuffle(u_idx)
+        #random.shuffle(u_idx)
         unlabel_train_idx = np.array(u_idx[:s])
         unlabel_test_idx = np.array(u_idx[s:n_s])
-        unlabel_train_idx.sort()
-        unlabel_test_idx.sort()
+        #unlabel_train_idx.sort()
+        #unlabel_test_idx.sort()
         print(f"Unlabelled Data len {len(unlabelled_img)}; n is {n_s} ;train size {s}, test size {n_s-s}")
 
     return train_idx, test_idx, train_labels, test_labels, unlabel_train_idx, unlabel_test_idx
