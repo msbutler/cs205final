@@ -32,7 +32,7 @@ def strong(semi = False):
     times = []
 
     print(f"FOR {max_gpus} GPUS")
-    for i in range(max_gpus+1):
+    for i in range(max_gpus):
         begin = time.time()
         print(f"Test on {i} GPUS!")
         l = [str(x) for x in list(range(i))]
@@ -86,5 +86,5 @@ def weak(semi = False):
     plt.plot(data_fracs,times)
     plt.savefig("avg_epoch_seconds_over_datasize.png")
 if __name__ == '__main__':
-    weak(False) 
+    #weak(False) 
     strong(False)
