@@ -9,6 +9,7 @@
 ### Directory
 - `Train/`:  folder with subdirectories for labeled and unlabeled training data
 - `Figures/`:  folder containing results from performance tests
+- `Presentation/`:  folder containing slides from final presentation
 - `_old/`:  folder containing out-of-date versions of files
 - `architecture.py`:  defines CNN architecture
 - `config.py`:  configures data parameters (i.e., image resize dimensions)
