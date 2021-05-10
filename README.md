@@ -1,11 +1,20 @@
-## CS 205 Files
+## Large Scale Computer Vision for Flood Disaster Management 
+## CS 205 Final Project (Spring 2021)
 
-- Notes: https://docs.google.com/document/d/1l59pmMgrA2c_3rufF4HzTuMAflDeTNvFUZ0m3uclkOI/edit?usp=drive_web&ouid=108009432622220243767
+**Contributors: Michael Butler, Preston Ching, M. Elaine Cunha**
 
-milestone 4 presentation: 
-- https://docs.google.com/presentation/d/1YZvoJr_EYGS8xWhgNYZY4G1kZy0xasCff15NFFDCNoU/edit
+### Website
+[https://msbutler.github.io/cs205final.github.io/](https://msbutler.github.io/cs205final.github.io/)
 
-
-## AM 231 FIles
- - Final Presentation: https://docs.google.com/presentation/d/1qsWIESgxfkQWCGY-aA7o5JhG8BMIZOd68N4Dc7XETxM/edit?ts=608ff387#slide=id.p 
- - Deepnote: https://deepnote.com/project/FloodnetChallenge-M2A6HKLjQTKbwNLOJ4RY5w/%2FCNN_supervised.ipynb#00003-f28a21fe-26dc-490f-8c77-dd48fb71f965
+### Directory
+- `Train/`:  folder with subdirectories for labeled and unlabeled training data
+- `Figures/`:  folder containing results from performance tests
+- `_old/`:  folder containing out-of-date versions of files
+- `architecture.py`:  defines CNN architecture
+- `config.py`:  configures data parameters (i.e., image resize dimensions)
+- `run.py`:  trains one instance of the supervised or semisupervised model
+- `semisupervised.py`:  specifies training methodology for the semisupervised model
+- `supervised.py`:  specifies training methodology for the fully supervised model
+- `strong_scaling.py`:  script for running strong scaling performance tests (see `Replication.md` for instructions)
+- `weak_scaling.py`:  script for running weak scaling performance tests (see `Replication.md` for instructions)
+- `utils.py`:  contains functions for image analysis and developing training/testing sets
