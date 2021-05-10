@@ -15,7 +15,7 @@ import sys
 
 # set to max number of gpus on the instance
 max_gpus = 2
-iters = 2
+iters = 5
 
 def strong(semi, num_gpus):
     print("strong scaling test")
@@ -77,12 +77,12 @@ def strong(semi, num_gpus):
     else:
         supervised.fit(input_dict, training_iters=iters)
 
-    strong_scaling_time = time.time()-begin
+    strong_scaling_time = (time.time()-begin) / iters
     print("Strong Scaling Time: {}".format(strong_scaling_time))
 
     return strong_scaling_time
 
 
 if __name__ == '__main__':
-    time_gpu = strong(sys.argv[1],sys.argv[2])
+    time_gpu = strong(sys.argv[1],int(sys.argv[2]))
     print("Time for {} GPUs: {}".format(sys.argv[2],time_gpu))
